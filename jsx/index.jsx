@@ -2,46 +2,6 @@ const ADDRESS_DATA_URL = (countryCode) => {
   return `https://chromium-i18n.appspot.com/ssl-address/data/${countryCode}`;
 };
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
-function getBadgeColor() {
-  const badgeColor = [
-    "badge-primary",
-    "badge-secondary",
-    "badge-success",
-    "badge-danger",
-    "badge-warning",
-    "badge-info",
-    "badge-light",
-    "badge-dark"
-  ];
-  return badgeColor[getRandomInt(badgeColor.length)];
-}
-
-const FisherYates = (array) => {
-  const swap = (i, j) => {
-    [array[i], array[j]] = [array[j], array[i]];
-  };
-  
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    swap(j, i);
-  }
-  return array;
-};
-
-const shuffle = (array) => {
-  const impl = FisherYates;
-  return impl(array);
-};
-
-const fetchJson = async (resource) => {
-  let response = await fetch(resource);
-  return await response.json();
-};
-
 class App extends React.Component {
   state = {
     countries: undefined,
@@ -228,14 +188,16 @@ class App extends React.Component {
 
           <div className="flex-container">
             <button type="button"
+              key="selectAll"
               className="btn btn-outline-primary btn-sm mr-3"
               onClick={this.selectAll.bind(this)}>Select All</button>
-              <button type="button" id="randomSelections"
-                className="btn btn-outline-primary btn-sm mr-3"
-                onClick={this.randomize.bind(this)}>Random Selections</button>
-              <button type="button"
-                className="btn btn-outline-primary btn-sm mr-3" 
-                onClick={this.clearSelections.bind(this)}>Clear Selections</button>
+            <button key="randomSelections" type="button" id="randomSelections"
+              className="btn btn-outline-primary btn-sm mr-3"
+              onClick={this.randomize.bind(this)}>Random Selections</button>
+            <button type="button"
+              key="clearSelections"
+              className="btn btn-outline-primary btn-sm mr-3"
+              onClick={this.clearSelections.bind(this)}>Clear Selections</button>
           </div>
           <hr />
           <div>{badges}</div>
@@ -264,7 +226,7 @@ function CountrySelector({items, countries}) {
   
   const options = sortedPairs.map((entry) => {
     const [name, code] = entry;
-    return <option value={code}>{name}</option>;
+    return <option key={code} value={code}>{name}</option>;
   });
   
   return (
