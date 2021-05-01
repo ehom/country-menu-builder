@@ -45,7 +45,9 @@ class App extends React.Component {
   componentDidUpdate() {
     console.debug("componentDidUpdate");
     const element = document.getElementById('countryMenu');
-    element && console.log("countryMenu:", element.outerHTML);
+    element && console.debug("countryMenu:", element.outerHTML);
+    const textarea = document.getElementById('htmlSource');
+    (element && textarea) && (textarea.value = element.outerHTML);
   }
 
   makePromise(countryCode) {
@@ -161,11 +163,6 @@ class App extends React.Component {
       selected: []
     });
   }
-  
-  showSource() {
-    const menu = document.getElementById('countryMenu');
-    menu && console.debug("outerHTML:", menu.outerHTML);
-  }
 
   render() {
     console.debug("render");
@@ -179,28 +176,37 @@ class App extends React.Component {
 
     return (
       <div className="container mt-5 mb-5 pb-5">
-        <div className="border border-primary rounded p-3 mb-2">
-          <h3>Dropdown Menu</h3>
-          <CountrySelector items={this.state.selected} countries={this.state.countries} />
-        </div>
-        <div className="container border border-info rounded p-3">
-          <h3>Select Countries</h3>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="container border border-info rounded p-3">
+            <h3>Select Countries</h3>
 
-          <div className="flex-container">
-            <button type="button"
-              key="selectAll"
-              className="btn btn-outline-primary btn-sm mr-3"
-              onClick={this.selectAll.bind(this)}>Select All</button>
-            <button key="randomSelections" type="button" id="randomSelections"
-              className="btn btn-outline-primary btn-sm mr-3"
-              onClick={this.randomize.bind(this)}>Random Selections</button>
-            <button type="button"
-              key="clearSelections"
-              className="btn btn-outline-primary btn-sm mr-3"
-              onClick={this.clearSelections.bind(this)}>Clear Selections</button>
+            <div className="flex-container">
+              <button type="button"
+                key="selectAll"
+                className="btn btn-outline-primary btn-sm mr-3"
+                onClick={this.selectAll.bind(this)}>Select All</button>
+              <button key="randomSelections" type="button" id="randomSelections"
+                className="btn btn-outline-primary btn-sm mr-3"
+                onClick={this.randomize.bind(this)}>Random Selections</button>
+              <button type="button"
+                key="clearSelections"
+                className="btn btn-outline-primary btn-sm mr-3"
+                onClick={this.clearSelections.bind(this)}>Clear Selections</button>
+            </div>
+            <hr />
+            <div>{badges}</div>
           </div>
-          <hr />
-          <div>{badges}</div>
+      </div>
+          <div className="col-md-6">
+            <div className="border border-primary rounded p-3 mb-2">
+              <h3>Dropdown Menu</h3>
+              <CountrySelector items={this.state.selected} countries={this.state.countries} />
+            </div>
+            <div className="border border-primary rounded p-3 mb-2">
+              <textarea id="htmlSource" className="form-control" rows="100"></textarea>
+            </div>
+          </div>
         </div>
         <hr />
         <footer className="container bg-light p-3">
