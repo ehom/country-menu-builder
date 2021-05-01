@@ -44,10 +44,14 @@ class App extends React.Component {
   
   componentDidUpdate() {
     console.debug("componentDidUpdate");
-    const element = document.getElementById('countryMenu');
-    element && console.debug("countryMenu:", element.outerHTML);
+    const menu = document.getElementById('countryMenu');
     const textarea = document.getElementById('htmlSource');
-    (element && textarea) && (textarea.value = element.outerHTML);
+    let result = ['<select>'];
+    const optionRegex = /<option\b[^>]*>.*?<\/option>/g;
+    const options = menu.outerHTML.match(optionRegex);
+    (options) && (result = result.concat(options));
+    result.push('</select>');
+    textarea.value = result.join('\n');
   }
 
   makePromise(countryCode) {
@@ -204,7 +208,7 @@ class App extends React.Component {
               <CountrySelector items={this.state.selected} countries={this.state.countries} />
             </div>
             <div className="border border-primary rounded p-3 mb-2">
-              <textarea id="htmlSource" className="form-control" rows="100"></textarea>
+              <textarea id="htmlSource" className="form-control" cols="40" rows="100"></textarea>
             </div>
           </div>
         </div>
