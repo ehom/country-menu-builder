@@ -29,12 +29,16 @@ class App extends React.Component {
   componentDidUpdate() {
     console.debug("componentDidUpdate");
     const menu = document.getElementById('countryMenu');
-    const textarea = document.getElementById('htmlSource');
+
     let result = ['<select>'];
-    const optionRegex = /<option\b[^>]*>.*?<\/option>/g;
-    const options = menu.outerHTML.match(optionRegex);
-    (options) && (result = result.concat(options));
+    for (const childNode of menu.childNodes) {
+      console.debug("childNode: ", childNode.outerHTML);
+      result.push(childNode.outerHTML);
+    }
+
     result.push('</select>');
+
+    const textarea = document.getElementById('htmlSource');
     textarea.value = result.join('\n');
   }
 
