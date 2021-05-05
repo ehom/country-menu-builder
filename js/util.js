@@ -1,7 +1,3 @@
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 function getBadgeColor() {
   const badgeColor = [
     "badge-primary",
@@ -14,6 +10,10 @@ function getBadgeColor() {
     "badge-dark"
   ];
   return badgeColor[getRandomInt(badgeColor.length)];
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }
 
 const FisherYates = (array) => {

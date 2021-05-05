@@ -58,12 +58,20 @@ class App extends React.Component {
     });
   }
 
-  makeBadges(countryCodes, selected) {
-    return countryCodes.map((code, index) => {
+  makeBadges(countries, selected) {
+    console.debug("makeBadges:", Object.keys(countries));
+    // convert kv table to sorted array of [countryName, countryCode]
+    
+    console.debug("assoc array to array: ", Object.entries(countries));
+    const sortedEntries = Object.entries(countries).sort((a, b) => {
+      return a[1].localeCompare(b[1]);
+    });
+    return sortedEntries.map(([code, name], index) => {
       let buttonClass = "btn btn-secondary badge-pill";
       buttonClass = selected.includes(code)
         ? `${buttonClass} badge-warning`
         : `${buttonClass} badge-light`;
+
       return (
         <React.Fragment>
           {index > 0 && index % 20 === 0 ? (
@@ -80,7 +88,7 @@ class App extends React.Component {
             key={code}
             onClick={this.buttonClicked.bind(this)}
           >
-            {this.state.countries[code]}
+            {name}
           </button>
           &nbsp;
         </React.Fragment>
@@ -139,7 +147,7 @@ class App extends React.Component {
 
     console.debug("render countries:", this.state.countries);
 
-    const badges = this.makeBadges(this.state.selection, this.state.selected);
+    const badges = this.makeBadges(this.state.countries, this.state.selected);
 
     return (
       <div className="container mt-5 mb-5 pb-5">
